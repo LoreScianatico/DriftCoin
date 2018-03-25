@@ -21,35 +21,8 @@ public class BlockMinerBean implements BlockMiner {
     @Autowired
     private BlockChainRepository blockChainRepository;
 
-    BlockChain chain = null;
-
-    @Override
-    public BlockChain mineBlock() {
-        String target = new String(new char[5]).replace('\0', '0');
-        String lastHash = "0";
-        if(chain != null && !chain.isEmpty())
-        {
-            lastHash=chain.getBlocks().get(chain.size()-1).getHash();
-        }
-
-        Block block = BlockFactory.getBlock(lastHash, "Mined block.");
-        while(!block.getHash().startsWith(target)) {
-            block.rehash();
-        }
-        log.info("Block Mined!!! : " + block.getHash());
-
-        if (chain == null){
-            chain = BlockFactory.getBlockChain(block);
-        } else {
-            chain.addBlock(block);
-        }
-
-        return chain;
-    }
-
     @Override
     public Mono<BlockChain> createChain() {
-        BlockChain chain = null;
         String target = new String(new char[DIFFICULTY]).replace('\0', '0');
 
         Block block = BlockFactory.getBlock("0", "Mined block.");
@@ -58,7 +31,7 @@ public class BlockMinerBean implements BlockMiner {
         }
         log.info("Block Mined!!! : " + block.getHash());
 
-        chain = BlockFactory.getBlockChain(block);
+        BlockChain chain = BlockFactory.getBlockChain(block);
 
         return blockChainRepository.save(chain);
     }

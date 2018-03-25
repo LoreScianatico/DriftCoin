@@ -5,8 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface BlockMiner {
 
-    BlockChain mineBlock();
-
     Mono<BlockChain> createChain();
 
     Mono<BlockChain> mineBlock(String chainId);
