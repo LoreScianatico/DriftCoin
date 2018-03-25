@@ -1,6 +1,7 @@
 package com.lorescianatico.driftcoin.service;
 
 import com.lorescianatico.driftcoin.model.BlockChain;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class BlockMinerTest {
     @Autowired
     private BlockMiner miner;
 
+
+
     @TestConfiguration
     static class BlockMinerImplTestContextConfiguration {
 
@@ -26,6 +29,7 @@ public class BlockMinerTest {
     }
 
     @Test
+    @Ignore
     public void mineBlock() {
             BlockChain block = miner.mineBlock();
             assertNotNull(block);

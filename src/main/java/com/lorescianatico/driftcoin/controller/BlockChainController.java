@@ -18,7 +18,7 @@ public class BlockChainController {
     public String createBlock(Model model) {
         log.debug("Getting Index page");
 
-        model.addAttribute("blockchain", miner.mineBlock());
+        model.addAttribute("blockchain", miner.createChain());
 
         return "index";
     }
