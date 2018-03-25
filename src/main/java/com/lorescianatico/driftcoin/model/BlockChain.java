@@ -1,21 +1,25 @@
 package com.lorescianatico.driftcoin.model;
 
 import com.lorescianatico.driftcoin.util.HashUtil;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
+@Document
+@NoArgsConstructor
+@AllArgsConstructor
 public class BlockChain {
 
-    @Singular
-    private List<Block> blocks = new ArrayList<>();
+    @Id
+    private String id;
 
-    BlockChain(){ super(); }
+    @Singular
+    private List<Block> blocks;
 
     BlockChain(List<Block> blocks ){
         this.blocks = blocks;
