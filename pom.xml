@@ -81,6 +81,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- coveralls -->
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+				<configuration>
+					<repoToken>${env.COVERALLS_REPO_TOKEN}</repoToken>
+					<sourceDirectories>
+						<param>${basedir}/src/main/java</param>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
