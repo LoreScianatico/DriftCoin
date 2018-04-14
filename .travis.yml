@@ -5,3 +5,11 @@ install:
   - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 after_success:
   - mvn clean test jacoco:report coveralls:report
+
+addons:
+  sonarcloud:
+    organization: "lorescianatico-github"
+    token:
+      secure: "bS0e26SOD46nAP/Ec2rEQCC8SYnCVmybqbeC6L5tL1uWk5RMHjao6nEOIWlTHidlCOyHvrBkkAgisFmI765nzFYyKjBmCAfIghpOgvW6FAPJsloOzQ+AFB+wvWiF8kTsuq6W46Y3JAL2863uAzt/nPAK7JG/lQITMXgdHU04lNnrz3UrLOlJHywBGu+7iMLUxChxW8ReW42CKjVa5X6Tjcq7yVr2KJ4IThbdGnyE+UHzc18NLEGHKF+WDmpjanZC/fYr8OFsI6RnAzA+jtBYoKGxb/RIIJiEgCTjpzHtTbkHLG07B39B0JkyckzNuWOL7TZ+Rzu38vDD03qcSsXqH47znK46yOFIlI5yOwSK4TDODR4K68/ICdvDFK0jbrEN+z9frs30fG15see41zNiNAZY4D60l36TgDQqqDtEnQ+1g75s0BYDzWj/ZEglgJobmF0iWfxirrzRtDpj/mYC40xsDn9oiMIodSXQwKjZDha5m9Bc400lm3fVDxqC4h5vVzK+s+PWoQ63y5N03qVGDBYHFY1avAqLWQ71DBoqGD+Cpen2GCQhgZF3h2BXekuLRU9r1XTHBMcWSiz+S0Rez/309ZXWedPqX/aWYiBvpsQOd7stLjeiUUIhZWWFKQC1dwVwNaM40wTIHHEvnxW0gCUU9cKJduuyR0qaBOCB/Bc="
+script:
+  - sonar-scanner
