@@ -29,7 +29,7 @@ public class BlockMinerBean implements BlockMiner {
         while(!block.getHash().startsWith(target)) {
             block.rehash();
         }
-        log.info("Block Mined!!! : " + block.getHash());
+        logger.info("Block Mined!!! : " + block.getHash());
 
         BlockChain chain = BlockFactory.getBlockChain(block);
 
@@ -50,7 +50,7 @@ public class BlockMinerBean implements BlockMiner {
         while(!block.getHash().startsWith(target)) {
             block.rehash();
         }
-        log.info("Block Mined!!! : " + block.getHash());
+        logger.info("Block Mined!!! : " + block.getHash());
 
         chain.addBlock(block);
 

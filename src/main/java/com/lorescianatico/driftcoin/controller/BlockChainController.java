@@ -16,7 +16,7 @@ public class BlockChainController {
 
     @RequestMapping({"", "/", "/index"})
     public String createChain(Model model) {
-        log.debug("Getting Index page");
+        logger.debug("Getting Index page");
 
         model.addAttribute("blockchain", miner.createChain());
 
