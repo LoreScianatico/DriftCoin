@@ -39,7 +39,7 @@ public class BlockFactoryTest {
 
         BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
         assertTrue(chain.isChainValid());
-        assertEquals(chain.size(), 3);
+        assertEquals(3, chain.size());
         assertFalse(chain.isEmpty());
     }
 
@@ -57,7 +57,7 @@ public class BlockFactoryTest {
 
         BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
         assertTrue(!chain.isChainValid());
-        assertEquals(chain.size(), 3);
+        assertEquals(3, chain.size());
         assertFalse(chain.isEmpty());
 
     }
