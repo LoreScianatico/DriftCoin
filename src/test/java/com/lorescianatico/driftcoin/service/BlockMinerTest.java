@@ -1,5 +1,6 @@
 package com.lorescianatico.driftcoin.service;
 
+import com.lorescianatico.driftcoin.config.DriftcoinSettings;
 import com.lorescianatico.driftcoin.model.BlockChain;
 import com.lorescianatico.driftcoin.repository.BlockChainRepository;
 import org.junit.Before;
@@ -25,10 +26,13 @@ public class BlockMinerTest {
     @Mock
     private BlockChainRepository blockChainRepository;
 
+    @Mock
+    private DriftcoinSettings settings;
 
     @Before
     public void setUp() {
         initMocks(this);
+        when(settings.getDifficulty()).thenReturn(2);
     }
 
     @Test

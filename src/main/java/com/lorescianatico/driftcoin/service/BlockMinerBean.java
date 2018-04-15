@@ -1,5 +1,6 @@
 package com.lorescianatico.driftcoin.service;
 
+import com.lorescianatico.driftcoin.config.DriftcoinSettings;
 import com.lorescianatico.driftcoin.fault.NotFoundException;
 import com.lorescianatico.driftcoin.model.Block;
 import com.lorescianatico.driftcoin.model.BlockChain;
@@ -15,14 +16,15 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class BlockMinerBean implements BlockMiner {
 
-    public static final int DIFFICULTY = 5;
+    @Autowired
+    public DriftcoinSettings settings;
 
     @Autowired
     private BlockChainRepository blockChainRepository;
 
     @Override
     public Mono<BlockChain> createChain() {
-        String target = new String(new char[DIFFICULTY]).replace('\0', '0');
+        String target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
 
         Block block = BlockFactory.getBlock("0", "Mined block.");
         while(!block.getHash().startsWith(target)) {
@@ -37,7 +39,7 @@ public class BlockMinerBean implements BlockMiner {
 
     @Override
     public Mono<BlockChain> mineBlock(String chainId) {
-        String target = new String(new char[DIFFICULTY]).replace('\0', '0');
+        String target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
 
         Mono<BlockChain> chain = blockChainRepository.findById(chainId).flatMap(blockChain -> {
             if (blockChain == null){
