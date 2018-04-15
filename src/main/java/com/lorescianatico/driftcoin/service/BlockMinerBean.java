@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -40,20 +39,25 @@ public class BlockMinerBean implements BlockMiner {
     public Mono<BlockChain> mineBlock(String chainId) {
         String target = new String(new char[DIFFICULTY]).replace('\0', '0');
 
-        Optional<BlockChain> chainOptional = blockChainRepository.findById(Mono.justOrEmpty(chainId)).blockOptional();
+        Mono<BlockChain> chain = blockChainRepository.findById(chainId).flatMap(blockChain -> {
+            if (blockChain == null){
+                throw new NotFoundException("BlockChain not found: " + chainId);
+            }
 
-        BlockChain chain = chainOptional.orElseThrow(() -> new NotFoundException("BlockChain not found: " + chainId));
+            String lastHash = blockChain.getBlocks().get(blockChain.size()-1).getHash();
 
-        String lastHash = chain.getBlocks().get(chain.size()-1).getHash();
+            Block block = BlockFactory.getBlock(lastHash, "Mined block.");
+            while(!block.getHash().startsWith(target)) {
+                block.rehash();
+            }
+            logger.info("Block Mined!!! : " + block.getHash());
 
-        Block block = BlockFactory.getBlock(lastHash, "Mined block.");
-        while(!block.getHash().startsWith(target)) {
-            block.rehash();
-        }
-        logger.info("Block Mined!!! : " + block.getHash());
+            blockChain.addBlock(block);
 
-        chain.addBlock(block);
+            return Mono.just(blockChain);
+        });
 
-        return blockChainRepository.save(chain);
+
+        return blockChainRepository.saveAll(chain).last();
     }
 }
