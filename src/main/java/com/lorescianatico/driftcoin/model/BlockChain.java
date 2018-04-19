@@ -26,6 +26,9 @@ public class BlockChain {
     }
 
     public int size(){
+        if (this.blocks == null){
+            return 0;
+        }
         return this.blocks.size();
     }
 
@@ -54,6 +57,9 @@ public class BlockChain {
     }
 
     public void addBlock(Block block) {
+        if(this.blocks==null){
+            blocks = new ArrayList<>();
+        }
         List<Block> newBlocks = new ArrayList<>();
         newBlocks.addAll(blocks);
         newBlocks.add(block);
