@@ -1,13 +1,11 @@
 language: java
-# git strips the wrapper jar file so we have to force its download during the build
-install:
-  - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-after_success:
-  - mvn clean test jacoco:report coveralls:report sonar:sonar
 
 addons:
   sonarcloud:
     organization: "lorescianatico-github"
     token:
       secure: "US7qjzksLwKprYNAWZYuSSFpkVRW9QVCdhuFOQDsVyMS7lqoDMhE3quJECI2P0P4YVQX/fm8YsKv5pX0mYAehQYAZ+M4BHzlgfghwVvBMyKXa3//7yHLFJ863swGzTdxoKAu6H2MLsHiZGxgXpRY+LkGIPmNL/WuP3tFI+sMQc09CiDRJQZT3dBNGjjLhyZc0DA2zvWwuXGmexrTZUbHtRiG2OizWLWquQb6aYtj0pqaSEyhadd7HGVpEIH58hFISgWpz9SEM3Q4ZECUEiBQmAWdFDUzNGq3iTt+jitupS6GNYMCxfsd1EMPP652cIjC4g7KvjiJuZzctaBQ9Ee0fpfbD1WUX+rIpReQL1dvJYDc1T66aH+N2OGcUZmKB9skRTNtmbC6X/gdr8kdjD95mhzgQZ4VmQAMzIr6MHZJD6S7g19cxOITPgy4ehOIj8Ye5EBaqrkg5fACyP2n0DavrhCoPgkqHl0AHoBjjcH4fzoZWn3jBO87QElZQl3oJbbGIzO+VSwZ7oRYilSE7ZKizWq92JzwIqMO4i4Fk2qoXw6FU1zxMt+EtwDXxYRP31cAGjfQnAgA5wL7SrjOr8aFQuErz/3wUo6sPecrEyV89oWW6j3BLnT+0Ua7JPU4hudAwm8Cctgi/Y5bhSCJrWKCaII36DtE3xlYGxFiY9YLMas="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
