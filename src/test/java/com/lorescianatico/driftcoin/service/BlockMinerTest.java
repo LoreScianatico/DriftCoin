@@ -18,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockMinerTest {
@@ -34,7 +33,6 @@ public class BlockMinerTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
         when(settings.getDifficulty()).thenReturn(2);
         when(blockChainRepository.save(any(BlockChain.class))).thenAnswer(invocationOnMock -> {
             BlockChain chain = invocationOnMock.getArgument(0);
