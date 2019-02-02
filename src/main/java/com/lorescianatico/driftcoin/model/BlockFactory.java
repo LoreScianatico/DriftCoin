@@ -1,6 +1,8 @@
 package com.lorescianatico.driftcoin.model;
 
 
+import java.util.Arrays;
+
 import static com.lorescianatico.driftcoin.model.BlockChain.*;
 
 public class BlockFactory {
@@ -17,9 +19,7 @@ public class BlockFactory {
 
     public static BlockChain getBlockChain(Block... blocks){
         BlockChainBuilder builder = BlockChain.builder();
-        for (Block block : blocks) {
-            builder.block(block);
-        }
+        Arrays.stream(blocks).forEach(builder::block);
         return builder.build();
     }
 }
