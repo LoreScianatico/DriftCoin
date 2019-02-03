@@ -36,6 +36,10 @@ public class BlockChain {
         Block currentBlock;
         Block previousBlock;
 
+        if(!isFirstBlockValid(blocks.get(0))){
+            return false;
+        }
+
         //loop through blockchain to check hashes:
         for(int i=1; i < blocks.size(); i++) {
             currentBlock = blocks.get(i);
@@ -50,6 +54,10 @@ public class BlockChain {
             }
         }
         return true;
+    }
+
+    private boolean isFirstBlockValid(Block block) {
+        return ("0".equals(block.getPreviousHash()) && HashUtil.applySha256(block).equals(block.getHash()));
     }
 
     public void addBlock(Block block) {

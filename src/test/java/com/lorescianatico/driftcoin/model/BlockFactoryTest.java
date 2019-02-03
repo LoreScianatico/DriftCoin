@@ -1,5 +1,6 @@
 package com.lorescianatico.driftcoin.model;
 
+import com.lorescianatico.driftcoin.util.HashUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -73,7 +74,27 @@ public class BlockFactoryTest {
 
         Block thirdBlock = BlockFactory.getBlock(secondBlock.getHash(), "Third block");
         logger.info("Hash for block 3 : " + thirdBlock.getHash());
-        thirdBlock.setPreviousHash("justanotherhash");
+        secondBlock.setPreviousHash("justanotherhash");
+        secondBlock.setHash(HashUtil.applySha256(secondBlock));
+
+        BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
+        assertTrue(!chain.isChainValid());
+        assertEquals(3, chain.size());
+        assertFalse(chain.isEmpty());
+
+    }
+
+    @Test
+    public void getBlockChainTamperedFirstBlock() {
+        Block genesisBlock = BlockFactory.getBlock("0", "First block");
+        logger.info("Hash for block 1 : " + genesisBlock.getHash());
+
+        Block secondBlock = BlockFactory.getBlock(genesisBlock.getHash(), "Second block");
+        logger.info("Hash for block 2 : " + secondBlock.getHash());
+
+        Block thirdBlock = BlockFactory.getBlock(secondBlock.getHash(), "Third block");
+        logger.info("Hash for block 3 : " + thirdBlock.getHash());
+        genesisBlock.setPreviousHash("1234");
 
         BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
         assertTrue(!chain.isChainValid());
