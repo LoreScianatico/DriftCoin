@@ -7,11 +7,8 @@ import com.lorescianatico.driftcoin.model.BlockChain;
 import com.lorescianatico.driftcoin.model.BlockFactory;
 import com.lorescianatico.driftcoin.repository.BlockChainRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.PostConstruct;
 
 
 @Service
@@ -22,7 +19,7 @@ public class BlockMinerBean implements BlockMiner {
 
     private String target;
 
-    public BlockMinerBean(BlockChainRepository blockChainRepository, DriftcoinSettings driftcoinSettings){
+    public BlockMinerBean(BlockChainRepository blockChainRepository, DriftcoinSettings driftcoinSettings) {
         this.blockChainRepository = blockChainRepository;
         target = new String(new char[driftcoinSettings.getDifficulty()]).replace('\0', '0');
     }
@@ -48,7 +45,7 @@ public class BlockMinerBean implements BlockMiner {
                 .flatMap(this::addBlockToExistingChain);
     }
 
-    private Mono<BlockChain> addBlockToExistingChain(BlockChain blockChain){
+    private Mono<BlockChain> addBlockToExistingChain(BlockChain blockChain) {
         logger.debug("Found blockchain with id {} and size {}", blockChain.getId(), blockChain.size());
 
         String lastHash = blockChain.getBlocks().get(blockChain.size() - 1).getHash();
