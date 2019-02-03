@@ -98,8 +98,9 @@ public class BlockFactoryTest {
 
         BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
         assertTrue(!chain.isChainValid());
-        assertEquals(3, chain.size());
-        assertFalse(chain.isEmpty());
 
+        genesisBlock.setPreviousHash("0");
+        genesisBlock.setHash("whatever");
+        assertTrue(!chain.isChainValid());
     }
 }
