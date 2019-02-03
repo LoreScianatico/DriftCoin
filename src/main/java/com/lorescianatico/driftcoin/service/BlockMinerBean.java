@@ -32,8 +32,6 @@ public class BlockMinerBean implements BlockMiner {
 
     @Override
     public Mono<BlockChain> createChain() {
-        String target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
-
         Block block = BlockFactory.getBlock("0", "Mined block.");
         while (!block.getHash().startsWith(target)) {
             block.rehash();
