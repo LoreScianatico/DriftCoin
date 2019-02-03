@@ -15,6 +15,6 @@ public class HashUtil {
 
     //Applies Sha256 to a string and returns the result.
     public static String applySha256(Block input) {
-        return applySha256(input.getMessage() + input.getPreviousHash() + Long.toString(input.getTimeStamp()) + Integer.toString(input.getNonce()));
+        return applySha256(input.getMessage() + input.getPreviousHash() + (input.getTimeStamp()) + (input.getNonce()));
     }
 }

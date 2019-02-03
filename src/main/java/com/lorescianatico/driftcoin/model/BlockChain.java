@@ -32,7 +32,7 @@ public class BlockChain {
         return this.blocks.isEmpty();
     }
 
-    public Boolean isChainValid() {
+    public boolean isChainValid() {
         Block currentBlock;
         Block previousBlock;
 
