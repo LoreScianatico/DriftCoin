@@ -1,12 +1,12 @@
 package com.lorescianatico.driftcoin.config;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
+@Builder
 public class DriftcoinSettings {
 
     private Integer difficulty;

@@ -18,16 +18,13 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class BlockMinerBean implements BlockMiner {
 
-    private DriftcoinSettings settings;
-
     private BlockChainRepository blockChainRepository;
 
     private String target;
 
     public BlockMinerBean(BlockChainRepository blockChainRepository, DriftcoinSettings driftcoinSettings){
         this.blockChainRepository = blockChainRepository;
-        this.settings = driftcoinSettings;
-        target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
+        target = new String(new char[driftcoinSettings.getDifficulty()]).replace('\0', '0');
     }
 
     @Override

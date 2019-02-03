@@ -12,9 +12,7 @@ public class DriftCoinConfiguration {
 
     @Bean
     public DriftcoinSettings driftcoinSettings(){
-        DriftcoinSettings settings = new DriftcoinSettings();
-        settings.setDifficulty(difficulty);
-        return  settings;
+        return DriftcoinSettings.builder().difficulty(difficulty).build();
     }
 
 }
