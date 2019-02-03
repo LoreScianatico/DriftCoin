@@ -11,23 +11,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
+
 
 @Service
 @Slf4j
 public class BlockMinerBean implements BlockMiner {
 
-    @Autowired
-    public DriftcoinSettings settings;
+    private DriftcoinSettings settings;
 
-    @Autowired
     private BlockChainRepository blockChainRepository;
+
+    private String target;
+
+    public BlockMinerBean(BlockChainRepository blockChainRepository, DriftcoinSettings driftcoinSettings){
+        this.blockChainRepository = blockChainRepository;
+        this.settings = driftcoinSettings;
+        target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
+    }
 
     @Override
     public Mono<BlockChain> createChain() {
         String target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
 
         Block block = BlockFactory.getBlock("0", "Mined block.");
-        while(!block.getHash().startsWith(target)) {
+        while (!block.getHash().startsWith(target)) {
             block.rehash();
         }
         logger.info("Block Mined!!! : " + block.getHash());
@@ -38,28 +46,26 @@ public class BlockMinerBean implements BlockMiner {
     }
 
     @Override
-    public Mono<BlockChain> mineBlock(String chainId) {
-        String target = new String(new char[settings.getDifficulty()]).replace('\0', '0');
+    public Mono<BlockChain> mineBlock(final String chainId) {
 
-        Mono<BlockChain> chain = blockChainRepository.findById(chainId).flatMap(blockChain -> {
-            if (blockChain == null){
-                throw new NotFoundException("BlockChain not found: " + chainId);
-            }
+        return blockChainRepository.findById(chainId)
+                .switchIfEmpty(Mono.error(new NotFoundException("BlockChain not found: " + chainId)))
+                .flatMap(this::addBlockToExistingChain);
+    }
 
-            String lastHash = blockChain.getBlocks().get(blockChain.size()-1).getHash();
+    private Mono<BlockChain> addBlockToExistingChain(BlockChain blockChain){
+        logger.debug("Found blockchain with id {} and size {}", blockChain.getId(), blockChain.size());
 
-            Block block = BlockFactory.getBlock(lastHash, "Mined block.");
-            while(!block.getHash().startsWith(target)) {
-                block.rehash();
-            }
-            logger.info("Block Mined!!! : " + block.getHash());
+        String lastHash = blockChain.getBlocks().get(blockChain.size() - 1).getHash();
 
-            blockChain.addBlock(block);
+        Block block = BlockFactory.getBlock(lastHash, "Mined block.");
+        while (!block.getHash().startsWith(target)) {
+            block.rehash();
+        }
+        logger.info("Block Mined!!! : " + block.getHash());
 
-            return Mono.just(blockChain);
-        });
+        blockChain.addBlock(block);
 
-
-        return blockChainRepository.saveAll(chain).last();
+        return blockChainRepository.save(blockChain);
     }
 }
