@@ -24,6 +24,7 @@ public class BlockFactoryTest {
     public void getBlockChain() {
         BlockChain chain = BlockFactory.getBlockChain();
         assertNotNull(chain);
+        assertEquals(0, chain.size());
     }
 
     @Test
@@ -54,6 +55,25 @@ public class BlockFactoryTest {
         Block thirdBlock = BlockFactory.getBlock(secondBlock.getHash(), "Third block");
         logger.info("Hash for block 3 : " + thirdBlock.getHash());
         thirdBlock.setMessage("Fourth block");
+
+        BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
+        assertTrue(!chain.isChainValid());
+        assertEquals(3, chain.size());
+        assertFalse(chain.isEmpty());
+
+    }
+
+    @Test
+    public void getBlockChainTamperedPreviousHash() {
+        Block genesisBlock = BlockFactory.getBlock("0", "First block");
+        logger.info("Hash for block 1 : " + genesisBlock.getHash());
+
+        Block secondBlock = BlockFactory.getBlock(genesisBlock.getHash(), "Second block");
+        logger.info("Hash for block 2 : " + secondBlock.getHash());
+
+        Block thirdBlock = BlockFactory.getBlock(secondBlock.getHash(), "Third block");
+        logger.info("Hash for block 3 : " + thirdBlock.getHash());
+        thirdBlock.setPreviousHash("justanotherhash");
 
         BlockChain chain = BlockFactory.getBlockChain(genesisBlock, secondBlock, thirdBlock);
         assertTrue(!chain.isChainValid());
