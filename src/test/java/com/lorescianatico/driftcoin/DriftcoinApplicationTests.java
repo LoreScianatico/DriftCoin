@@ -13,4 +13,9 @@ public class DriftcoinApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void testDriftcoinApplication(){
+		DriftcoinApplication.main(new String[]{});
+	}
+
 }
