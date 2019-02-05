@@ -26,6 +26,8 @@ public class BlockFactoryTest {
         BlockChain chain = BlockFactory.getBlockChain();
         assertNotNull(chain);
         assertEquals(0, chain.size());
+        assertTrue(chain.isEmpty());
+        assertTrue(chain.isChainValid());
     }
 
     @Test
