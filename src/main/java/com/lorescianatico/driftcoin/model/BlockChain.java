@@ -39,7 +39,7 @@ public class BlockChain {
         Block currentBlock;
         Block previousBlock;
 
-        if (blocks == null || isEmpty()){
+        if (isEmpty()){
             return true;
         }
 
