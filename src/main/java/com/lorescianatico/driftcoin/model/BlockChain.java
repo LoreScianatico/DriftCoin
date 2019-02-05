@@ -29,12 +29,19 @@ public class BlockChain {
     }
 
     public boolean isEmpty(){
+        if (blocks == null) {
+            return  true;
+        }
         return this.blocks.isEmpty();
     }
 
     public boolean isChainValid() {
         Block currentBlock;
         Block previousBlock;
+
+        if (blocks == null || isEmpty()){
+            return true;
+        }
 
         if(!isFirstBlockValid(blocks.get(0))){
             return false;
