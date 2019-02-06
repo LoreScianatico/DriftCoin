@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Data
 @Builder
 @Document
@@ -21,17 +20,15 @@ public class BlockChain {
     @Singular
     private List<Block> blocks;
 
+    BlockChain(){
+        blocks = new ArrayList<>();
+    }
+
     public int size(){
-        if (this.blocks == null){
-            return 0;
-        }
         return this.blocks.size();
     }
 
     public boolean isEmpty(){
-        if (blocks == null) {
-            return  true;
-        }
         return this.blocks.isEmpty();
     }
 
@@ -68,9 +65,6 @@ public class BlockChain {
     }
 
     public void addBlock(Block block) {
-        if(this.blocks==null){
-            blocks = new ArrayList<>();
-        }
         List<Block> newBlocks = new ArrayList<>(blocks);
         newBlocks.add(block);
         this.setBlocks(newBlocks);
