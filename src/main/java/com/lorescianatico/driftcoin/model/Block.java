@@ -2,6 +2,7 @@ package com.lorescianatico.driftcoin.model;
 
 import com.lorescianatico.driftcoin.util.HashUtil;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -20,9 +21,8 @@ public class Block {
         this.hash = HashUtil.applySha256(this);
     }
 
-    public Block rehash(){
+    public void rehash(){
         nonce++;
         this.hash = HashUtil.applySha256(this);
-        return this;
     }
 }
