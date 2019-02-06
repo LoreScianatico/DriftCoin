@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Builder
 @Document
+@RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class BlockChain {
 
@@ -18,10 +19,11 @@ public class BlockChain {
     private String id;
 
     @Singular
+    @NonNull
     private List<Block> blocks;
 
     BlockChain(){
-        blocks = new ArrayList<>();
+        this(new ArrayList<>());
     }
 
     public int size(){
