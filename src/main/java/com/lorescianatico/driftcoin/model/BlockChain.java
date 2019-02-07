@@ -13,7 +13,7 @@ import java.util.List;
 @Document
 @RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class BlockChain {
+public final class BlockChain {
 
     @Id
     private String id;

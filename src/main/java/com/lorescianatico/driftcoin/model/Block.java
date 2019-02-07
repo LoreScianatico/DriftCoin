@@ -6,7 +6,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Getter
-public class Block {
+public final class Block {
 
     @Setter
     @NonNull
