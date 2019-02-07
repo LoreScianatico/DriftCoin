@@ -35,8 +35,6 @@ public final class BlockChain {
     }
 
     public boolean isChainValid() {
-        Block currentBlock;
-        Block previousBlock;
 
         if (isEmpty()){
             return true;
@@ -45,6 +43,9 @@ public final class BlockChain {
         if(!isFirstBlockValid(blocks.get(0))){
             return false;
         }
+
+        Block currentBlock;
+        Block previousBlock;
 
         //loop through blockchain to check hashes:
         for(int i=1; i < blocks.size(); i++) {
@@ -67,8 +68,6 @@ public final class BlockChain {
     }
 
     public void addBlock(Block block) {
-        List<Block> newBlocks = new ArrayList<>(blocks);
-        newBlocks.add(block);
-        this.setBlocks(newBlocks);
+        this.blocks.add(block);
     }
 }

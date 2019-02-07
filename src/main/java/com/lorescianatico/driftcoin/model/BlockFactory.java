@@ -3,9 +3,9 @@ package com.lorescianatico.driftcoin.model;
 
 import java.util.Arrays;
 
-import static com.lorescianatico.driftcoin.model.BlockChain.*;
+import static com.lorescianatico.driftcoin.model.BlockChain.BlockChainBuilder;
 
-public class BlockFactory {
+public final class BlockFactory {
 
     private BlockFactory(){}
 
