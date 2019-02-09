@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
@@ -23,9 +24,11 @@ public class BlockChainRepositoryTest {
 
         assertNull(blockChain.getId());
 
-        blockChain = blockChainRepository.save(blockChain).block();
+        blockChain = blockChainRepository.save(blockChain)
+                .blockOptional().orElseThrow(NullPointerException::new);
 
-        BlockChain retrieved = blockChainRepository.findById(blockChain.getId()).block();
+        BlockChain retrieved = blockChainRepository.findById(blockChain.getId())
+                .blockOptional().orElseThrow(NullPointerException::new);
 
         assertEquals(blockChain.getId(), retrieved.getId());
     }
