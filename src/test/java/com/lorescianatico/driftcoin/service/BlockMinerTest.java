@@ -6,21 +6,19 @@ import com.lorescianatico.driftcoin.model.Block;
 import com.lorescianatico.driftcoin.model.BlockChain;
 import com.lorescianatico.driftcoin.model.BlockFactory;
 import com.lorescianatico.driftcoin.repository.BlockChainRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BlockMinerTest {
 
     @InjectMocks
@@ -32,17 +30,14 @@ public class BlockMinerTest {
     @Spy
     private DriftcoinSettings settings = new DriftcoinSettings(2);
 
-    @Before
-    public void setUp() {
+    @Test
+    public void createChain() {
         when(blockChainRepository.save(any(BlockChain.class))).thenAnswer(invocationOnMock -> {
             BlockChain chain = invocationOnMock.getArgument(0);
             chain.setId("A");
             return Mono.just(chain);
         });
-    }
 
-    @Test
-    public void createChain() {
         BlockChain block = miner.createChain().block();
         assertNotNull(block);
         assertEquals("A",block.getId());
@@ -50,6 +45,12 @@ public class BlockMinerTest {
 
     @Test
     public void mineBlock(){
+        when(blockChainRepository.save(any(BlockChain.class))).thenAnswer(invocationOnMock -> {
+            BlockChain chain = invocationOnMock.getArgument(0);
+            chain.setId("A");
+            return Mono.just(chain);
+        });
+
         when(blockChainRepository.findById(any(Mono.class))).thenAnswer(invocationOnMock -> {
             BlockChain chain = BlockFactory.getBlockChain();
             Block block = BlockFactory.getBlock("0", "msg");
@@ -57,15 +58,16 @@ public class BlockMinerTest {
             chain.setId("A");
             return Mono.just(chain);
         });
+
         BlockChain chain = blockChainRepository.findById(Mono.just("A")).block();
         int size = chain.size();
         BlockChain chainNew = miner.mineBlock(Mono.just("A")).block();
         assertEquals(size+1, chainNew.size());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void unexistingChain(){
         when(blockChainRepository.findById(any(Mono.class))).thenReturn(Mono.empty());
-        miner.mineBlock(Mono.just("B")).block();
+        assertThrows(NotFoundException.class, () -> miner.mineBlock(Mono.just("B")).block());
     }
 }

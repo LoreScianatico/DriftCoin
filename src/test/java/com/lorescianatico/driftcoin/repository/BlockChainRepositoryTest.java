@@ -2,16 +2,13 @@ package com.lorescianatico.driftcoin.repository;
 
 import com.lorescianatico.driftcoin.model.BlockChain;
 import com.lorescianatico.driftcoin.model.BlockFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(SpringRunner.class)
 @DataMongoTest
 public class BlockChainRepositoryTest {
 

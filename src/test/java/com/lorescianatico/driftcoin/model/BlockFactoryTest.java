@@ -2,9 +2,9 @@ package com.lorescianatico.driftcoin.model;
 
 import com.lorescianatico.driftcoin.util.HashUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class BlockFactoryTest {
