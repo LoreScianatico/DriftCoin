@@ -7,6 +7,6 @@ public interface BlockMiner {
 
     Mono<BlockChain> createChain();
 
-    Mono<BlockChain> mineBlock(String chainId);
+    Mono<BlockChain> mineBlock(Mono<String> chainId);
 
 }

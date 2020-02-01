@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,22 +50,22 @@ public class BlockMinerTest {
 
     @Test
     public void mineBlock(){
-        when(blockChainRepository.findById(anyString())).thenAnswer(invocationOnMock -> {
+        when(blockChainRepository.findById(any(Mono.class))).thenAnswer(invocationOnMock -> {
             BlockChain chain = BlockFactory.getBlockChain();
             Block block = BlockFactory.getBlock("0", "msg");
             chain.addBlock(block);
             chain.setId("A");
             return Mono.just(chain);
         });
-        BlockChain chain = blockChainRepository.findById("A").block();
+        BlockChain chain = blockChainRepository.findById(Mono.just("A")).block();
         int size = chain.size();
-        BlockChain chainNew = miner.mineBlock("A").block();
+        BlockChain chainNew = miner.mineBlock(Mono.just("A")).block();
         assertEquals(size+1, chainNew.size());
     }
 
     @Test(expected = NotFoundException.class)
     public void unexistingChain(){
-        when(blockChainRepository.findById(anyString())).thenReturn(Mono.empty());
-        miner.mineBlock("B").block();
+        when(blockChainRepository.findById(any(Mono.class))).thenReturn(Mono.empty());
+        miner.mineBlock(Mono.just("B")).block();
     }
 }

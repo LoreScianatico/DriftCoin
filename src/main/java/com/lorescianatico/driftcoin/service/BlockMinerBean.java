@@ -38,7 +38,7 @@ public class BlockMinerBean implements BlockMiner {
     }
 
     @Override
-    public Mono<BlockChain> mineBlock(final String chainId) {
+    public Mono<BlockChain> mineBlock(final Mono<String> chainId) {
 
         return blockChainRepository.findById(chainId)
                 .switchIfEmpty(Mono.error(new NotFoundException("BlockChain not found: " + chainId)))
